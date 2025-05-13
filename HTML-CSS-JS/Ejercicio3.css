@@ -1,0 +1,50 @@
+header {
+    background-color: #614948;
+    padding: 30px;
+    color: white;
+    text-align: center;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+    table-layout: fixed;
+    margin-top: 20px;
+}
+
+th, td {
+    border: 1px solid black;
+    padding: 15px;
+    height: 5px;
+}
+
+td {
+    height: 10px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.fyl {
+    background-color: orange;
+}
+
+.f2 {
+    background-color: lightgreen;
+}
+
+.f2c3 {
+    background-color: rgb(249, 249, 77);
+}
+
+.c3 {
+    background-color: pink;
+}
+
+.f3c2 {
+    background-color: rgb(66, 63, 63);
+}
+
+.rest {
+    background-color: lightblue;
+}
