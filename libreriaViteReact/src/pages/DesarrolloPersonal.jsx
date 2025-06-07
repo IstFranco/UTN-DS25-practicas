@@ -1,0 +1,25 @@
+import React from 'react'
+import Libros from '../components/EstructLibros'
+
+export default function DesarrolloPersonal() {
+    const librosDesarrollo = Libros.filter(
+        (libro) => libro.genero === 'DesarrolloPersonal'
+    );
+
+    return (
+        <div className='p-6 grid gap-6 md:grid-cols-3 justify-center'>
+            {librosDesarrollo.map((libro) => (
+                <div key={libro.id} className='p-6 rounded shadow w-60 mx-auto' style={{backgroundColor: '#b4978e'}}>
+                    <img
+                        src={libro.imagen}
+                        alt={libro.nombre}
+                        className='h-[300px] w-[200px] object-contain mx-auto'
+                    />
+                    <h2 className='text-lg font-bold mt-2'>{libro.titulo}</h2>
+                    <p className='text-sm text-gray-600'>{libro.autor}</p>
+                    <p className='text-m font-bold text-gray-900'>{libro.precio}</p>
+                </div>
+            ))}
+        </div>
+    );
+}
