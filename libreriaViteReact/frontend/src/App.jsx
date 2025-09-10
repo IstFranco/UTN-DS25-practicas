@@ -1,5 +1,4 @@
-import React, { useState } from 'react'
-import LibrosData from './components/EstructLibros'
+import React, { useEffect, useState } from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import ScrollToTop from './components/ScrollToTop';
@@ -16,8 +15,16 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import './App.css'
 
 function App(){
-  const [libros, setLibros] = useState(LibrosData);
+
+  const [libros, setLibros] = useState([]);
   
+  useEffect(() =>{
+    fetch('http://localhost:3001/api/books')
+    .then(res => res.json())
+    .then(data => setLibros(data))
+    .catch(error => console.error('Error al cargar libros: ', error))
+}, []);
+
   return (
     <div className="flex flex-col min-h-screen">
       <BrowserRouter>

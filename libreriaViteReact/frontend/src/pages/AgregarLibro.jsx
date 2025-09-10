@@ -19,29 +19,44 @@ export default function AgregarLibro({ setLibros }) {
         });
     };
 
-    const manejarSubmit = (e) => {
+    const manejarSubmit = async (e) => {
         e.preventDefault();
 
-    const nuevoId = Date.now();
+        try {
+            // Preparar datos 
+            const libroCompleto = {
+                ...nuevoLibro,
+                imagen: nuevoLibro.imagen || '/images/placeholder.jpg'
+            };
 
-    const libroCompleto = {
-        ...nuevoLibro,
-        id: nuevoId,
-        imagen: nuevoLibro.imagen || '/images/placeholder.jpg' // Imagen por defecto si no ponen URL
-    };
+            // ENVIAR al backend con fetch
+            const response = await fetch('http://localhost:3001/api/books', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(libroCompleto)
+            });
 
-    setLibros(librosActuales => [...librosActuales, libroCompleto]);
+            // Recibir respuesta del backend
+            const nuevoLibroCreado = await response.json();
 
-    setNuevoLibro({
-            titulo: '',
-            autor: '',
-            imagen: '',
-            genero: '',
-            precio: '',
-            destacado: false,
-        });
-        
-        alert('¡Libro agregado con éxito!');
+            // Actualizar el estado local con el libro que devolvió el backend
+            setLibros(librosActuales => [...librosActuales, nuevoLibroCreado]);
+            
+            // Limpiar formulario
+            setNuevoLibro({ 
+                titulo: '', 
+                autor: '', 
+                imagen: '', 
+                genero: '', 
+                precio: '', 
+                destacado: false, 
+            });
+            alert('¡Libro agregado con éxito!');
+
+        } catch (error) {
+            console.error('Error al agregar libro: ', error);
+            alert('Error al agregar el libro')
+        }
     };
 
     return (
