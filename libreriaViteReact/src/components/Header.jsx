@@ -13,6 +13,12 @@ export default function Header() {
                         <Link to='/'>🏠Inicio</Link>
                     </li>
                     <li>
+                        <Link to='/Catalogo'>📚Catalogo</Link>
+                    </li>
+                    <li>
+                        <Link to='AgregarLibro'>✔️Agregar Libro</Link>
+                    </li>
+                    <li>
                         <Link to='/DesarrolloPersonal'>🔑Desarrollo Personal</Link>
                     </li>
                     <li>

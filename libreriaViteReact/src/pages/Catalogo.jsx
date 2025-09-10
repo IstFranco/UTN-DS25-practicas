@@ -1,47 +1,40 @@
 import React, { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import Libros from '../components/EstructLibros'
 import BarraBusqueda from '../components/BarraBusqueda';
 
-export default function Inicio() {
-
+export default function Catalogo({ libros }) {
     const [terminoBusqueda, setTerminoBusqueda] = useState("");
     const [mostrarTodo, setMostrarTodo] = useState(false);
-
-    const inicio = Libros.filter(
-        (libro) => libro.destacado === true
-    );
-
+    
     const manejarBusqueda = (termino) => {
         setTerminoBusqueda(termino);
         setMostrarTodo(termino.length > 0);
     };
-
-    const librosMostrar = mostrarTodo 
-        ? inicio.filter(libro => 
+    
+    const librosMostrar = mostrarTodo
+        ? libros.filter(libro =>
             libro.titulo.toLowerCase().includes(terminoBusqueda.toLowerCase())
         )
-        : inicio;
-
+        : libros;
+        
     return (
         <div className='p-6'>
-            
             <h1 className='text-3xl md:text-4xl font-bold text-center text-white mb-8 border-b-4 border-[#b4978e] inline-block pb-2'>
-                {mostrarTodo ? '🔍 Resultados de búsqueda' : '✨Títulos destacados✨'}
+                {mostrarTodo ? '🔍 Resultados de búsqueda' : '📚Catalogo'}
             </h1>
-            
+    
             <BarraBusqueda onBuscar={manejarBusqueda} />
-
+            
             <p className='text-[#e0d6d3] mt-3 text-sm md:text-base italic'>
-                {mostrarTodo 
+                {mostrarTodo
                     ? `Encontramos ${librosMostrar.length} libro(s) con "${terminoBusqueda}"`
-                    : 'Descubrí nuestras recomendaciones más elegidas por los lectores'
+                    : 'Encontra el libro que buscas :)'
                 }
             </p>
-
+            
             <div className='p-6 grid gap-6 md:grid-cols-3 justify-center'>
-                {librosMostrar.map((libro) => (
-                    <Link 
+                {librosMostrar.map((libro) => ( 
+                    <Link
                         to={`/${libro.genero}`}
                         key={libro.id}
                         className='p-6 rounded shadow w-60 mx-auto hover:scale-105 transition-transform'
@@ -49,7 +42,7 @@ export default function Inicio() {
                     >
                         <img
                             src={libro.imagen}
-                            alt={libro.nombre}
+                            alt={libro.titulo}
                             className='h-[300px] w-[200px] object-contain mx-auto'
                         />
                         <h2 className='text-lg font-bold mt-2'>{libro.titulo}</h2>

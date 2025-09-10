@@ -234,7 +234,7 @@ const Libros = [
         destacado: false,
     },
     {
-        id: 19,
+        id: 27,
         titulo: 'El Silbón: ecos en la oscuridad',
         autor: 'Luciana Cabrera',
         imagen: '/images/silbon.jpg',
