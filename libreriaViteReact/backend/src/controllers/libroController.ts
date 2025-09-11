@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { Libros } from '../data/libros';
+import { Libro } from '../types/libro'; 
 
 // GET /api/books - Listar todos los libros
 export const listarLibros = (req: Request, res: Response) => {
