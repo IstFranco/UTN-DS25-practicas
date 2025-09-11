@@ -7,6 +7,10 @@ export default function Inicio({ libros }) {
     const [terminoBusqueda, setTerminoBusqueda] = useState("");
     const [mostrarTodo, setMostrarTodo] = useState(false);
 
+    if (!libros || !Array.isArray(libros)) {
+        return <div className="text-white text-center p-6">Cargando...</div>;
+    }
+
     const inicio = libros.filter(
         (libro) => libro.destacado === true
     );

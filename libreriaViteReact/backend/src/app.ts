@@ -13,6 +13,13 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+//Ya no se que hacer para que se impirman los datos migrados.
+// Middleware de debugging
+app.use((req, res, next) => {
+    console.log(`[${new Date().toISOString()}] ${req.method} ${req.url}`);
+    next();
+});
+
 // Ruta de prueba - buena ptractica
 app.get('/', (req, res) => {
     res.json({ 

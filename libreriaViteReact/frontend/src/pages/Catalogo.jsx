@@ -6,6 +6,10 @@ export default function Catalogo({ libros }) {
     const [terminoBusqueda, setTerminoBusqueda] = useState("");
     const [mostrarTodo, setMostrarTodo] = useState(false);
     
+    if (!libros || !Array.isArray(libros)) {
+        return <div className="text-white text-center p-6">Cargando...</div>;
+    }
+
     const manejarBusqueda = (termino) => {
         setTerminoBusqueda(termino);
         setMostrarTodo(termino.length > 0);

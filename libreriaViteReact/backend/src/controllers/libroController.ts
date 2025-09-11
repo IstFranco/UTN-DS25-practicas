@@ -1,32 +1,38 @@
 import { Request, Response } from 'express';
-import { Libros } from '../data/libros';
-import { Libro } from '../types/libro'; 
+import { PrismaClient } from '@prisma/client';
+import { Libro } from '../types/libro';
+
+const prisma = new PrismaClient();
 
 // GET /api/books - Listar todos los libros
-export const listarLibros = (req: Request, res: Response) => {
+export const listarLibros = async (req: Request, res: Response) => {
     try {
-        res.json(Libros);
+        console.log('🔍 Intentando obtener libros de la base de datos...');
+        const libros = await prisma.libro.findMany({
+            orderBy: { createdAt: 'desc' }
+        });
+        console.log('✅ Libros obtenidos:', libros.length, 'registros');
+        res.json(libros);
     } catch (error) {
-        res.status(500).json({ 
-            error: 'Error interno del servidor al obtener libros' 
+        console.error('❌ Error detallado al obtener libros:', error);
+        res.status(500).json({
+            error: 'Error interno del servidor al obtener libros'
         });
     }
 };
 
 // POST /api/books - Crear nuevo libro
-export const crearLibro = (req: Request, res: Response) => {
+export const crearLibro = async (req: Request<{}, any, Libro>, res: Response) => {
     try {
-        const nuevoLibro = {
-            id: Date.now(),
-            ...req.body
-        };
-        
-        Libros.push(nuevoLibro);
+        const nuevoLibro = await prisma.libro.create({
+            data: req.body
+        });
         
         res.status(201).json(nuevoLibro);
     } catch (error) {
-        res.status(500).json({ 
-            error: 'Error interno del servidor al crear libro' 
+        console.error('Error al crear libro:', error);
+        res.status(500).json({
+            error: 'Error interno del servidor al crear libro'
         });
     }
 };

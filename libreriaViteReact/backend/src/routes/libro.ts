@@ -3,10 +3,13 @@ import { listarLibros, crearLibro } from '../controllers/libroController';
 
 const router = Router();
 
-// GET /api/books - Obtener todos los libros
-router.get('/', listarLibros);
+// Middleware de debugging temporal
+router.use((req, res, next) => {
+    console.log(`Ruta llamada: ${req.method} ${req.path}`);
+    next();
+});
 
-// POST /api/books - Agregar nuevo libro
+router.get('/', listarLibros);
 router.post('/', crearLibro);
 
 export default router;

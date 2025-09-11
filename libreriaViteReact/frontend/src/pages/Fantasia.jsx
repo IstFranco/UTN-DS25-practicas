@@ -1,6 +1,11 @@
 import React from 'react'
 
 export default function Fantasia({ libros }) {
+    
+    if (!libros || !Array.isArray(libros)) {
+        return <div className="text-white text-center p-6">Cargando...</div>;
+    }
+    
     const librosDesarrollo = libros.filter(
         (libro) => libro.genero === 'Fantasia'
     );
