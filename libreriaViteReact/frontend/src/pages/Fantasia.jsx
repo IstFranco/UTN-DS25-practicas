@@ -1,8 +1,7 @@
 import React from 'react'
-import Libros from '../components/EstructLibros'
 
-export default function DesarrolloPersonal() {
-    const librosDesarrollo = Libros.filter(
+export default function Fantasia({ libros }) {
+    const librosDesarrollo = libros.filter(
         (libro) => libro.genero === 'Fantasia'
     );
 

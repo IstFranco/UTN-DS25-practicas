@@ -35,10 +35,10 @@ function App(){
             <Route path='/' element={<Inicio libros={libros} />}/>
             <Route path='/Catalogo' element={<Catalogo libros={libros} />}/>
             <Route path='/AgregarLibro' element={<AgregarLibro setLibros={setLibros} />} />
-            <Route path='/DesarrolloPersonal' element={<DesarrolloPersonal />}/>
-            <Route path='/Fisica' element={<Fisica />}/>
-            <Route path='/Matematicas' element={<Matematicas />}/>
-            <Route path='/Fantasia' element={<Fantasia />}/>
+            <Route path='/DesarrolloPersonal' element={<DesarrolloPersonal libros={libros} />}/>
+            <Route path='/Fisica' element={<Fisica libros={libros} />}/>
+            <Route path='/Matematicas' element={<Matematicas libros={libros} />}/>
+            <Route path='/Fantasia' element={<Fantasia libros={libros} />}/>
             <Route path='/Registrate' element={<Registrate />}/>
             <Route path='/Contacto' element={<Contacto />}/>
           </Routes>

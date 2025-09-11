@@ -1,14 +1,13 @@
 import React, { useState } from 'react'
 import { Link, useSearchParams } from 'react-router-dom'
-import Libros from '../components/EstructLibros'
 import BarraBusqueda from '../components/BarraBusqueda';
 
-export default function Inicio() {
+export default function Inicio({ libros }) {
 
     const [terminoBusqueda, setTerminoBusqueda] = useState("");
     const [mostrarTodo, setMostrarTodo] = useState(false);
 
-    const inicio = Libros.filter(
+    const inicio = libros.filter(
         (libro) => libro.destacado === true
     );
 
