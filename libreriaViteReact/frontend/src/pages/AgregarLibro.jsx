@@ -1,131 +1,114 @@
-import React, { useState } from 'react'
+import React, { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { libroSchema } from '../validations/libroSchema';
 
-export default function AgregarLibro({ setLibros }) {
+export default function AgregarLibro() {
+    const [serverError, setServerError] = useState('');
+    const [success, setSuccess] = useState('');
 
-    const [nuevoLibro, setNuevoLibro] = useState({
-        titulo: '',
-        autor: '',
-        imagen: '',
-        genero: '',
-        precio: '',
-        destacado: false,
+    const {
+        register,
+        handleSubmit,
+        formState: { errors, isSubmitting },
+        reset
+    } = useForm({
+        resolver: yupResolver(libroSchema)
     });
 
-    const manejarCambio = (e) => {
-        const { name, value } = e.target;
-        setNuevoLibro({
-            ...nuevoLibro,
-            [name]: value
-        });
-    };
-
-    const manejarSubmit = async (e) => {
-        e.preventDefault();
-
+    const onSubmit = async (data) => {
+        setServerError('');
+        setSuccess('');
+        
         try {
-            // Preparar datos 
-            const libroCompleto = {
-                ...nuevoLibro,
-                imagen: nuevoLibro.imagen || '/images/placeholder.jpg'
-            };
-
-            // ENVIAR al backend con fetch
             const response = await fetch('http://localhost:3001/api/libros', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(libroCompleto)
+                body: JSON.stringify(data),
             });
 
-            // Recibir respuesta del backend
-            const nuevoLibroCreado = await response.json();
+            const responseData = await response.json();
 
-            // Actualizar el estado local con el libro que devolvió el backend
-            setLibros(librosActuales => [...librosActuales, nuevoLibroCreado]);
-            
-            // Limpiar formulario
-            setNuevoLibro({ 
-                titulo: '', 
-                autor: '', 
-                imagen: '', 
-                genero: '', 
-                precio: '', 
-                destacado: false, 
-            });
-            alert('¡Libro agregado con éxito!');
+            if (!response.ok) {
+                throw new Error(responseData.error || 'Error al agregar el libro');
+            }
 
-        } catch (error) {
-            console.error('Error al agregar libro: ', error);
-            alert('Error al agregar el libro')
+            setSuccess(`¡Libro "${responseData.titulo}" agregado con éxito!`);
+            reset();
+
+        } catch (err) {
+            setServerError(err.message);
         }
     };
 
+    const formStyles = 'bg-white p-6 rounded shadow-md w-full max-w-lg space-y-4';
+    const inputStyles = 'w-full mt-1 p-2 rounded border border-gray-300';
+    const buttonStyles = 'bg-blue-600 text-white w-full py-2 rounded hover:bg-blue-700 transition';
+
     return (
-        <div>
-            <div className="p-6 max-w-md mx-auto">
-                <h1 className="text-3xl font-bold text-center text-white mb-8">
-                    📖 Agregar Nuevo Libro
-                </h1>
-                <form onSubmit={manejarSubmit} className="space-y-4">
-                    <label className="block text-white mb-2">Titulo: </label>
-                    <input
-                        type="text"
-                        name="titulo"
-                        value={nuevoLibro.titulo}
-                        onChange={manejarCambio}
-                        className='w-full bg-[#f7e5df] p-3 rounded border border-gray-300'
-                        placeholder='Ingrese el titulo'
-                        required
-                    />
-                    <label className="block text-white mb-2">Autor: </label>
-                    <input
-                        type="text"
-                        name="autor"
-                        value={nuevoLibro.autor}
-                        onChange={manejarCambio}
-                        className='w-full bg-[#f7e5df] p-3 rounded border border-gray-300'
-                        placeholder='Ingrese el autor'
-                        required
-                    />
-                    <label className="block text-white mb-2">Imagen: </label>
-                    <input
-                        type="url"
-                        name="imagen"
-                        value={nuevoLibro.imagen}
-                        onChange={manejarCambio}
-                        className='w-full bg-[#f7e5df] p-3 rounded border border-gray-300'
-                        placeholder='Ingrese la URL de la imagen'
-                        required
-                    />
-                    <label className="block text-white mb-2">Genero: </label>
-                    <input
-                        type="text"
-                        name="genero"
-                        value={nuevoLibro.genero}
-                        onChange={manejarCambio}
-                        className='w-full bg-[#f7e5df] p-3 rounded border border-gray-300'
-                        placeholder='Ingrese el genero (debe existir)'
-                        required
-                    />
-                    <label className="block text-white mb-2">Precio: </label>
-                    <input
-                        type="Text"
-                        name="precio"
-                        value={nuevoLibro.precio}
-                        onChange={manejarCambio}
-                        className='w-full bg-[#f7e5df] p-3 rounded border border-gray-300'
-                        placeholder='Formato: "$9999.99"'
-                        required
-                    />
+        <div className='p-6 flex justify-center'>
+            <form onSubmit={handleSubmit(onSubmit)} className={formStyles}>
+                <h2 className='text-xl font-bold text-center mb-2'>Agregar Nuevo Libro</h2>
 
-                    <button
-                        type="submit"
-                        className="w-full bg-[#b4978e] text-white p-3 rounded hover:bg-[#8b6f66] transition-colors cursor-pointer"
-                    >
-                        Agregar Libro
-                    </button>
+                {serverError && <div className="error-message">{serverError}</div>}
 
-                </form>
-            </div>
+                <div>
+                    <label htmlFor='titulo' className='block font-medium'>Título</label>
+                    <input
+                        type='text' id='titulo'
+                        {...register("titulo")}
+                        className={`${inputStyles} ${errors.titulo ? 'input-error' : ''}`}
+                    />
+                    {errors.titulo && <span className="field-error">{errors.titulo.message}</span>}
+                </div>
+
+                <div>
+                    <label htmlFor='autor' className='block font-medium'>Autor</label>
+                    <input
+                        type='text' id='autor'
+                        {...register("autor")}
+                        className={`${inputStyles} ${errors.autor ? 'input-error' : ''}`}
+                    />
+                    {errors.autor && <span className="field-error">{errors.autor.message}</span>}
+                </div>
+
+                <div>
+                    <label htmlFor='genero' className='block font-medium'>Género</label>
+                    <input
+                        type='text' id='genero'
+                        {...register("genero")}
+                        className={`${inputStyles} ${errors.genero ? 'input-error' : ''}`}
+                    />
+                    {errors.genero && <span className="field-error">{errors.genero.message}</span>}
+                </div>
+                
+                <div>
+                    <label htmlFor='precio' className='block font-medium'>Precio</label>
+                    <input
+                        type='text'
+                        id='precio'
+                        {...register("precio")}
+                        className={`${inputStyles} ${errors.precio ? 'input-error' : ''}`}
+                    />
+                    {errors.precio && <span className="field-error">{errors.precio.message}</span>}
+                </div>
+                
+                <div>
+                    <label htmlFor='imagen' className='block font-medium'>URL de Imagen (Opcional)</label>
+                    <input
+                        type='text' id='imagen'
+                        {...register("imagen")}
+                        className={`${inputStyles} ${errors.imagen ? 'input-error' : ''}`}
+                    />
+                    {errors.imagen && <span className="field-error">{errors.imagen.message}</span>}
+                </div>
+
+                <button type='submit' disabled={isSubmitting} className={buttonStyles}>
+                    {isSubmitting ? 'Guardando...' : 'Agregar Libro'}
+                </button>
+
+                {success && <p className="text-green-600 text-center font-bold">{success}</p>}
+            </form>
         </div>
-    )
+    );
 }

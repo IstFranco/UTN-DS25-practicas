@@ -1,7 +1,8 @@
 import { Router } from 'express';
-import { listarUsuarios, registrarUsuario } from '../controllers/usuarioController';
+import { listarUsuarios, registrarUsuario, loginUsuario } from '../controllers/usuarioController';
 import { validateSchema } from '../middleware/validateSchema';
 import { usuarioRegisterSchema } from '../schemas/usuarioSchema';
+import { authenticate, authorize } from '../middleware/authMiddleware';
 
 const router = Router();
 
@@ -11,15 +12,21 @@ router.use((req, res, next) => {
     next();
 });
 
-// GET /api/usuarios -> Listar todos los usuarios
-router.get('/', listarUsuarios);
-
 // POST /api/usuarios/registro -> Registrar un nuevo usuario
 router.post(
     '/registro',
-    validateSchema(usuarioRegisterSchema), // <-- ¡ESTA LÍNEA FALTABA!
+    validateSchema(usuarioRegisterSchema),
     registrarUsuario
 );
+
+router.post('/login', loginUsuario);
+
+// Protegida
+// GET /api/usuarios -> Listar todos los usuarios
+router.get('/',
+    authenticate,
+    authorize('ADMIN'),
+    listarUsuarios);
 
 console.log('✅ --- ¡Archivo de rutas de USUARIO.TS cargado correctamente! --- ✅');
 

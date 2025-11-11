@@ -22,6 +22,9 @@ FROM nginx:stable-alpine
 # Copiamos los archivos estáticos generados en la etapa anterior a la carpeta de Nginx
 COPY --from=builder /app/dist /usr/share/nginx/html
 
+# Esto es porque cada vez que refrescaba la pagina me tiraba error 404, ahora anda bien
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 # Le decimos al contenedor que exponga el puerto 80 (el default de Nginx)
 EXPOSE 80
 
