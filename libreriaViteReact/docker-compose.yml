@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  # Servicio del Backend
+  backend:
+    build: ./backend
+    container_name: libreria-backend
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./backend/.env
+    
+    volumes:
+      - ./backend/prisma:/app/prisma
+
+  # Servicio del Frontend
+  frontend:
+    build: ./frontend
+    container_name: libreria-frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend

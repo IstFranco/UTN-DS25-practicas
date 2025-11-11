@@ -1,3 +1,23 @@
+# Archivos de entorno - ¡LOS MÁS IMPORTANTES!
+# Ignora los archivos .env en la raíz, backend y frontend
+.env
+/backend/.env
+/frontend/.env
+
+# Base de datos de SQLite (¡No subir!)
+/backend/prisma/dev.db
+/backend/prisma/dev.db-journal
+
+# Dependencias (node_modules)
+/node_modules
+/backend/node_modules
+/frontend/node_modules
+
+# Archivos de Build (compilados)
+/dist
+/backend/dist
+/frontend/dist
+
 # Logs
 logs
 *.log
@@ -7,18 +27,9 @@ yarn-error.log*
 pnpm-debug.log*
 lerna-debug.log*
 
-node_modules
-dist
-dist-ssr
-*.local
+# Archivos del sistema operativo
+.DS_Store
 
 # Editor directories and files
-.vscode/*
-!.vscode/extensions.json
-.idea
-.DS_Store
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
+.vscode/
+.idea/

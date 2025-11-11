@@ -1,7 +1,9 @@
 import express from 'express';
 import cors from 'cors';
 import dotenv from 'dotenv';
-import libroRoutes from './routes/libro';
+import libro from './routes/libro';
+import usuario from './routes/usuario';
+import reseña from './routes/reseña';
 
 // Configurar variables de entorno
 dotenv.config();
@@ -26,13 +28,21 @@ app.get('/', (req, res) => {
         message: 'API Librería funcionando correctamente!',
         version: '1.0.0',
         endpoints: [
-            'GET /api/books',
-            'POST /api/books'
+            'GET /api/libros',
+            'POST /api/libros',
+            'GET /api/usuarios',
+            'POST /api/usuarios',
+            'GET /api/reseñas',
+            'POST /api/reseñas'
 //            'POST /api/users'
         ]
     });
 });
 
-app.use('/api/books', libroRoutes);
+app.use('/api/libros', libro);
+app.use('/api/usuarios', usuario);
+app.use('/api/reseñas', reseña);
+
+console.log('✅ --- ¡Archivo de rutas de USUARIO cargado! --- ✅');
 
 export default app;

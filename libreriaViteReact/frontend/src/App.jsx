@@ -19,7 +19,7 @@ function App(){
   const [libros, setLibros] = useState([]);
   
   useEffect(() =>{
-    fetch('http://localhost:3001/api/books')
+    fetch('http://localhost:3001/api/libros')
     .then(res => res.json())
     .then(data => setLibros(data))
     .catch(error => console.error('Error al cargar libros: ', error))

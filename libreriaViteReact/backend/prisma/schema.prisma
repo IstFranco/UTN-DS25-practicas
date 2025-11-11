@@ -25,5 +25,45 @@ model Libro {
   createdAt  DateTime @default(now())
   updatedAt  DateTime @updatedAt
   
+  // Relaciones
+  reseñas    Reseña[]
+
   @@map("libros")
+}
+
+model Usuario {
+  id        Int      @id @default(autoincrement())
+  usuario   String   @unique  // nombre de usuario
+  nombre    String              // nombre completo
+  email     String   @unique
+  password  String
+  edad      Int?                // opcional
+  sexo      String?             // opcional
+  pais      String?             // opcional
+  rol       String   @default("usuario")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  
+  // Relaciones
+  reseñas   Reseña[]
+  
+  @@map("usuarios")
+}
+
+model Reseña {
+  id          Int      @id @default(autoincrement())
+  comentario  String
+  puntuacion  Int      // 1-5 estrellas
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  
+  // Claves foráneas
+  usuarioId   Int
+  libroId     Int
+  
+  // Relaciones
+  usuario     Usuario  @relation(fields: [usuarioId], references: [id], onDelete: Cascade)
+  libro       Libro    @relation(fields: [libroId], references: [id], onDelete: Cascade)
+  
+  @@map("reseñas")
 }
