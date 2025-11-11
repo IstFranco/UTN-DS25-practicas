@@ -21,7 +21,7 @@ export default function AgregarLibro() {
         setSuccess('');
         
         try {
-            const response = await fetch('http://localhost:3001/api/libros', {
+            const response = await fetch(`${import.meta.env.VITE_API_URL}/api/libros`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(data),
