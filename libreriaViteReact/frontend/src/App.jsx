@@ -19,7 +19,7 @@ function App(){
   const [libros, setLibros] = useState([]);
   
   useEffect(() =>{
-    fetch(`${import.meta.env.VITE_API_URL}api/libros`)
+    fetch(`${import.meta.env.VITE_API_URL}/api/libros`)
     .then(res => res.json())
     .then(data => setLibros(data))
     .catch(error => console.error('Error al cargar libros: ', error))
