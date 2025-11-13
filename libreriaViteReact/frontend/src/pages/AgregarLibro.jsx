@@ -2,10 +2,12 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import { libroSchema } from '../validations/libroSchema';
+import { useNavigate } from 'react-router-dom';
 
-export default function AgregarLibro() {
+export default function AgregarLibro({ setLibros }) {
     const [serverError, setServerError] = useState('');
     const [success, setSuccess] = useState('');
+    const navigate = useNavigate();
 
     const {
         register,
@@ -20,18 +22,37 @@ export default function AgregarLibro() {
         setServerError('');
         setSuccess('');
         
+        const token = localStorage.getItem('userToken');
+
+        if(!token) {
+            setServerError('Error: Debes iniciar sesion para agregar un libro.');
+            setTimeout(() => navigate('/login'), 2000);
+            return;
+        }
+
         try {
             const response = await fetch(`${import.meta.env.VITE_API_URL}/api/libros`, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'application/json',
+                            'Authorization': `Bearer ${token}`
+                        },
                 body: JSON.stringify(data),
             });
 
             const responseData = await response.json();
 
+            if (response.status === 401) {
+                setServerError('Tu sesion ha expirado Por favor, inicie sesion nuevamente.')
+                localStorage.removeItem('userToken');
+                setTimeout(() => navigate('/login'), 2000);
+                return;
+            }
+
             if (!response.ok) {
                 throw new Error(responseData.error || 'Error al agregar el libro');
             }
+
+            setLibros(librosAnteriores => [responseData, ...librosAnteriores]);
 
             setSuccess(`¡Libro "${responseData.titulo}" agregado con éxito!`);
             reset();

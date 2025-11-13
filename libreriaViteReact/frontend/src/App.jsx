@@ -9,7 +9,8 @@ import DesarrolloPersonal from './pages/DesarrolloPersonal'
 import Fisica from './pages/Fisica'
 import Matematicas from './pages/Matematicas'
 import Fantasia from './pages/Fantasia'
-import Registrate from './pages/Registrate'
+import Login from './pages/Login';
+import RegistroUsuario from './pages/RegistroUsuario';
 import Contacto from './pages/Contacto'
 import { BrowserRouter, Routes, Route } from "react-router-dom"
 import './App.css'
@@ -39,7 +40,8 @@ function App(){
             <Route path='/Fisica' element={<Fisica libros={libros} />}/>
             <Route path='/Matematicas' element={<Matematicas libros={libros} />}/>
             <Route path='/Fantasia' element={<Fantasia libros={libros} />}/>
-            <Route path='/Registrate' element={<Registrate />}/>
+            <Route path='/login' element={<Login />}/>
+            <Route path='/registro-usuario' element={<RegistroUsuario />}/>
             <Route path='/Contacto' element={<Contacto />}/>
           </Routes>
         </main>

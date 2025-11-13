@@ -31,7 +31,7 @@ export default function Header() {
                         <Link to='/Fantasia'>🌌Fantasia</Link>
                     </li>
                     <li>
-                        <Link to='/Registrate'>💯Registrate</Link>
+                        <Link to='/login'>👤 Iniciar Sesión</Link>
                     </li>
                     <li>
                         <Link to='/Contacto'>📌Contacto</Link>
